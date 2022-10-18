@@ -31,7 +31,7 @@ class Vaikas(Base):
     tevas = relationship("Tevas") # - python'o
 
     def __repr__(self):
-        return f"({self.id}, {self.vardas}, {self.pavarde})"
+        return f"({self.id}, {self.vardas}, {self.pavarde}, {self.tevas})"
 
 
 if __name__=="__main__":
