@@ -14,6 +14,7 @@ class Tevas(Base):
     id = Column(Integer, primary_key=True)
     vardas = Column("vardas", String)
     pavarde = Column("pavardė", String)
+    vaikai = relationship("Vaikas", back_populates="tevas")
 
     def __repr__(self):
         return f"({self.id}, {self.vardas}, {self.pavarde})"
@@ -28,14 +29,14 @@ class Vaikas(Base):
     # Foreigen key veda i i lenteles pavadinima
     tevas_id = Column("tevas_id", Integer, ForeignKey("tevas.id")) # - domenu bazes
     # Foreigen key veda i Objekto pavadinima
-    tevas = relationship("Tevas") # - python'o
+    tevas = relationship("Tevas", back_populates="vaikai") # - python'o
 
     def __repr__(self):
         return f"({self.id}, {self.vardas}, {self.pavarde}, {self.tevas})"
 
 
 if __name__=="__main__":
-    # Base.metadata.drop_all(engine)
+    # Base.metadata.drop_all(engine) # delete
     Base.metadata.create_all(engine)
 
 
