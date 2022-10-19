@@ -1,5 +1,6 @@
 from sqlalchemy.orm import sessionmaker
 from models_bank import engine, Asmuo, Bankas, Saskaita
+from pprint import pprint
 
 Session = sessionmaker(bind=engine)
 session = sessionmaker(engine)()
@@ -48,26 +49,55 @@ def create_saskaita():
         session.commit()
         print(f"naujas sasskaita: '{sask_numeris}' sukurta sekmingai!")
 
+def sask_info():
+    pass
+
+def read_all_asmuo():
+    asmenys = session.query(Asmuo).all()
+    for asmuo in asmenys:
+        print("visi asmenys: ", asmuo)
+
+def read_all_bankas():
+    bankai = session.query(Bankas).all()
+    for bankas in bankai:
+        print("visi bankai: ", bankas)
+
+def read_all_saskaita():
+    saskaitos = session.query(Saskaita).all()
+    for saskaita in saskaitos:
+        print("visos saskaitos: ", saskaita)
+
+
+
 
 while True:
     print("Prasau ivesti norima pasirinkima: ")
     pasirinkimas = input(" 1 - ivesti asmeni\n 2 - ivesti banka\n 3 - iveskite saskaita\n 4 - sakaitos info\n\
  5 - perziureti visus asmenius\n 6 - perziureti visus bankus\n 7 - perziureti visas saskaitas\n 0 - exit\n Jusu pasirinkimas: ")
     if pasirinkimas == "1":
-        # vardas = input("vardas: ")
-        # pavarde = input("pavarde: ")
-        # asm_kodas = input("asmens kodas: ")
-        # tel_numeris = input("telefono numeris: ")
-        # asmuo = Asmuo(vardas=vardas, pavarde=pavarde, asm_kodas=asm_kodas, tel_numeris=tel_numeris)
-        # session.add(asmuo)
-        # session.commit()
         create_asmuo()
     if pasirinkimas == "2":
         create_bankas()
     if pasirinkimas == "3":
         create_saskaita()
-
-    if pasirinkimas =="0":  
+    if pasirinkimas == "4":
+        pasirinkimas = input(" 1 - ivesti pajamas\n 2 - ivesti islaidas\n 3 - perziureti balansa\n\
+ 9 - grizti i pagrindine Meniu\n Jusu pasirinkimas: ")
+        if pasirinkimas == "1":
+            pass
+        if pasirinkimas == "2":
+            pass
+        if pasirinkimas == "3":
+            pass
+        if pasirinkimas == "9":
+            print("Pagrindine menu")
+    if pasirinkimas == "5":
+        read_all_asmuo()
+    if pasirinkimas == "6":
+        read_all_bankas()
+    if pasirinkimas == "7":
+        read_all_saskaita()
+    if pasirinkimas == "0":  
         break
     
 

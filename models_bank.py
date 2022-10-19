@@ -70,9 +70,6 @@ if __name__ == "__main__":
 
 
 
-
-
-
 # # Pirmas variantas
 
 # # Tarpine lentele
