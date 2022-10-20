@@ -16,12 +16,12 @@ class Asmuo(Base):
     tel_numeris = Column("tel_numeris", Integer)
     saskaitos = relationship("Saskaita", back_populates = "asmuo")
 
-    def __init__(self, vardas, pavarde, asm_kodas, tel_numeris):
+    def __init__(self, vardas, pavarde, asm_kodas, tel_numeris): # tada nereikia __init__
         self.vardas=vardas
         self.pavarde=pavarde
         self.asm_kodas=asm_kodas
         self.tel_numeris=tel_numeris
-
+    
     def __repr__(self):
         return f"({self.id}, {self.vardas}, {self.pavarde}, {self.asm_kodas}, {self.tel_numeris})"
 
@@ -62,10 +62,10 @@ class Saskaita(Base):
         self.balansas=balansas
 
     def __repr__(self):
-        return f"({self.sask_numeris}, {self.balansas})"
+        return f"({self.id}, {self.sask_numeris}, {self.balansas})"
         
 if __name__ == "__main__":
-    # Base.metadata.drop_all(engine)  # delete lenteles
+    Base.metadata.drop_all(engine)  # delete lenteles
     Base.metadata.create_all(engine)  # sukurti leneles
 
 

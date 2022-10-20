@@ -11,7 +11,11 @@ session = sessionmaker(engine)()
 # įvesti asmenis, bankus, sąskaitas. Leistų vartotojui peržiūrėti savo sąskaitas ir jų informaciją, pridėti arba nuimti iš jų pinigų. 
 # Taip pat leistų bendrai peržiūrėti visus bankus, vartotojus, sąskaitas ir jų informaciją.
 
-def create_asmuo():
+def create_asmuo(): #(vardas, pavarde...)
+    # asmuo = Asmuo(vardas=vardas, pavarde=pavarde...)
+    #    session.add(asmuo)
+    #     session.commit()
+    #     print(f" ...
     try:
         vardas = input("vardas: ")
         pavarde = input("pavarde: ")
@@ -36,38 +40,58 @@ def create_bankas():
         session.commit()
         print(f" --- naujas bankas: '{pavadinimas}' sukurtas sekmingai! ---")
 
+
+
 def create_saskaita():
     try:
         sask_numeris = input("saskaitos numeris: ")
         balansas = 0
+        print_all_banks()
+        bankas_id = int(input("ivesti banko ID: "))
+        print_all_persons()
+        asmuo_id = int(input("ivesti asmens ID: "))
     except ValueError:
         print("Klaida: ivestas ne skaicius")
         return None
     else:
         saskaita = Saskaita(sask_numeris, balansas)
+        saskaita.bankas_id = bankas_id
+        saskaita.asmuo_id = asmuo_id
         session.add(saskaita)
         session.commit()
-        print(f"naujas sasskaita: '{sask_numeris}' sukurta sekmingai!")
+        print(f"naujas sasskaita: '{sask_numeris}' sameniui su ID: '{asmuo_id}' sukurta sekmingai!")
 
-def sask_info():
+def account_info():
     pass
 
-def read_all_asmuo():
+def add_incom_to_account():
+    # print_all_persons()
+    print_all_accounts()
+    saskaita_id = int(input("ivesti saskaitos ID: "))
+    pasirinkta_saskaita = session.query(Saskaita).get(saskaita_id)
+    pajamas = float(input("Iveskite pajamas: "))
+    pasirinkta_saskaita.balansas += pajamas
+    session.commit()
+    print("Jusu balansas pakeistas")
+    print_all_accounts()
+
+def add_expenses_to_account():
+    pass
+
+def print_all_persons():
     asmenys = session.query(Asmuo).all()
     for asmuo in asmenys:
         print("visi asmenys: ", asmuo)
 
-def read_all_bankas():
+def print_all_banks():
     bankai = session.query(Bankas).all()
     for bankas in bankai:
         print("visi bankai: ", bankas)
 
-def read_all_saskaita():
+def print_all_accounts():
     saskaitos = session.query(Saskaita).all()
     for saskaita in saskaitos:
         print("visos saskaitos: ", saskaita)
-
-
 
 
 while True:
@@ -84,25 +108,22 @@ while True:
         pasirinkimas = input(" 1 - ivesti pajamas\n 2 - ivesti islaidas\n 3 - perziureti balansa\n\
  9 - grizti i pagrindine Meniu\n Jusu pasirinkimas: ")
         if pasirinkimas == "1":
-            pass
+            add_incom_to_account()
         if pasirinkimas == "2":
             pass
         if pasirinkimas == "3":
             pass
         if pasirinkimas == "9":
-            print("Pagrindine menu")
+            print("Pagrindinis menu")
     if pasirinkimas == "5":
-        read_all_asmuo()
+        print_all_persons()
     if pasirinkimas == "6":
-        read_all_bankas()
+        print_all_banks()
     if pasirinkimas == "7":
-        read_all_saskaita()
+        print_all_accounts()
     if pasirinkimas == "0":  
         break
     
-
-
-
 
 
 # def create_object(Asmuo, **kwargs):
