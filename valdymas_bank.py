@@ -76,7 +76,14 @@ def add_incom_to_account():
     print_all_accounts()
 
 def add_expenses_to_account():
-    pass
+    print_all_accounts()
+    saskaita_id = int(input("ivesti saskaitos ID: "))
+    pasirinkta_saskaita = session.query(Saskaita).get(saskaita_id)
+    islaidos = float(input("ivesti islaidos: "))
+    pasirinkta_saskaita.balansas -= islaidos
+    session.commit()
+    print("Jusu balansas pakeistas")
+    print_all_accounts()
 
 def print_all_persons():
     asmenys = session.query(Asmuo).all()
@@ -110,7 +117,7 @@ while True:
         if pasirinkimas == "1":
             add_incom_to_account()
         if pasirinkimas == "2":
-            pass
+            add_expenses_to_account()
         if pasirinkimas == "3":
             pass
         if pasirinkimas == "9":
