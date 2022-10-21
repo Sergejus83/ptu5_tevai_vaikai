@@ -5,7 +5,6 @@ from pprint import pprint
 Session = sessionmaker(bind=engine)
 session = sessionmaker(engine)()
 
-
 # asmuo = Asmuo(vardas = "Sergejus", pavarde = "Bykovas", asm_kodas = 38301050000, tel_numeris = 861234567)
 
 # įvesti asmenis, bankus, sąskaitas. Leistų vartotojui peržiūrėti savo sąskaitas ir jų informaciją, pridėti arba nuimti iš jų pinigų. 
@@ -40,8 +39,6 @@ def create_bankas():
         session.commit()
         print(f" --- naujas bankas: '{pavadinimas}' sukurtas sekmingai! ---")
 
-
-
 def create_saskaita():
     try:
         sask_numeris = input("saskaitos numeris: ")
@@ -61,8 +58,15 @@ def create_saskaita():
         session.commit()
         print(f"naujas sasskaita: '{sask_numeris}' sameniui su ID: '{asmuo_id}' sukurta sekmingai!")
 
-def account_info():
+def chose_account_id():
     pass
+
+def account_info():
+    print_all_accounts()
+    saskaita_id = int(input("ivesti saskaitos ID: "))
+    pasirinkta_saskaita = session.query(Saskaita).get(saskaita_id)
+    pasirinktas_balansas = pasirinkta_saskaita.balansas
+    print("sakaitos info: ", pasirinktas_balansas)
 
 def add_incom_to_account():
     # print_all_persons()
@@ -100,44 +104,46 @@ def print_all_accounts():
     for saskaita in saskaitos:
         print("visos saskaitos: ", saskaita)
 
-
 while True:
     print("Prasau ivesti norima pasirinkima: ")
-    pasirinkimas = input(" 1 - ivesti asmeni\n 2 - ivesti banka\n 3 - iveskite saskaita\n 4 - sakaitos info\n\
- 5 - perziureti visus asmenius\n 6 - perziureti visus bankus\n 7 - perziureti visas saskaitas\n 0 - exit\n Jusu pasirinkimas: ")
+    pasirinkimas = input(" 1 - Meniu 'ivesti'\n 2 - Meniu 'pajamas/islaidas'\n 3 - Meniu 'perziura'\n 0 - exit\n Jusu pasirinkimas: ")
+    if pasirinkimas == "0":  
+        break
     if pasirinkimas == "1":
-        create_asmuo()
+        print(" -- meniu 'ivesti' -- ")
+        pasirinkimas = input(" 1 - ivesti asmeni\n 2 - ivesti banka\n 3 - iveskite saskaita\n 0 - grizti i Meniu\n Jusu pasirinkimas: ")
+        if pasirinkimas == "1": 
+            create_asmuo()
+        if pasirinkimas == "2":
+            create_bankas()
+        if pasirinkimas == "3":
+            create_saskaita()
+        if pasirinkimas == "0":
+            print("Meniu")
     if pasirinkimas == "2":
-        create_bankas()
-    if pasirinkimas == "3":
-        create_saskaita()
-    if pasirinkimas == "4":
-        pasirinkimas = input(" 1 - ivesti pajamas\n 2 - ivesti islaidas\n 3 - perziureti balansa\n\
- 9 - grizti i pagrindine Meniu\n Jusu pasirinkimas: ")
+        print(" -- meniu 'pajamos/islaidos' -- ")
+        pasirinkimas = input(" 1 - ivesti pajamas\n 2 - ivesti islaidas\n 3 - perziureti balansa\n 0 - grizti i Meniu\n Jusu pasirinkimas: ")
         if pasirinkimas == "1":
             add_incom_to_account()
         if pasirinkimas == "2":
             add_expenses_to_account()
         if pasirinkimas == "3":
-            pass
-        if pasirinkimas == "9":
-            print("Pagrindinis menu")
-    if pasirinkimas == "5":
-        print_all_persons()
-    if pasirinkimas == "6":
-        print_all_banks()
-    if pasirinkimas == "7":
-        print_all_accounts()
-    if pasirinkimas == "0":  
-        break
+            account_info()
+        if pasirinkimas == "0":
+            print("Meniu")
+    if pasirinkimas == "3":
+        print(" -- meniu 'perziura' -- ")
+        pasirinkimas = input(" 1 - perziureti visus asmenius\n 2 - perziureti visus bankus\n 3 - perziureti visas saskaitas\n 0 - grizti i Meniu\n Jusu pasirinkimas: ")
+        if pasirinkimas == "1":
+            print_all_persons()
+        if pasirinkimas == "2":
+            print_all_banks()
+        if pasirinkimas == "3":
+            print_all_accounts()
+        if pasirinkimas == "0":
+            print("Meniu")
+
     
-
-
-# def create_object(Asmuo, **kwargs):
-#     asmuo = Asmuo(**kwargs)
-#     session.add(asmuo)
-#     session.commit()
-#     return asmuo
 
 # def create_asmuo(Asmuo, **kwargs):
 #     asmuo = Asmuo(**kwargs)
